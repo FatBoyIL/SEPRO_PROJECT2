@@ -1,0 +1,17 @@
+{
+  "name": "SEPRO P2 Operations",
+  "dataColors": [
+    "#027A48",
+    "#039855",
+    "#12B76A",
+    "#32D583",
+    "#6CE9A6",
+    "#A6F4C5"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#182230",
+  "tableAccent": "#027A48",
+  "good": "#14804A",
+  "neutral": "#667085",
+  "bad": "#D92D20"
+}

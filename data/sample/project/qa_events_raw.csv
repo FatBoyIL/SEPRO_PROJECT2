@@ -1,0 +1,23 @@
+﻿qa_event_id,event_date,purchase_order_id,purchase_order_line_id,product_id,supplier_id,qa_type,severity,defect_qty,estimated_quality_cost_vnd,disposition
+QA000001,2025-02-14,PO000002,POL0000002,P023,S007,Particle/Visual Defect,Minor,1,1244000.0,Accepted with Concession
+QA000002,2025-02-16,PO000006,POL0000006,P027,S007,Packaging Damage,Minor,1,2927000.0,Replacement Requested
+QA000003,2025-05-10,PO000009,POL0000009,P024,S007,Particle/Visual Defect,Major,1,3532000.0,Replacement Requested
+QA000004,2025-06-30,PO000037,POL0000037,P005,S003,Documentation Issue,Minor,1,300000.0,Accepted with Concession
+QA000005,2025-07-04,PO000025,POL0000025,P004,S001,Particle/Visual Defect,Minor,1,342000.0,Replacement Requested
+QA000006,2025-08-14,PO000055,POL0000055,P005,S003,Documentation Issue,Minor,1,434000.0,Accepted with Concession
+QA000007,2025-09-11,PO000050,POL0000050,P024,S007,Packaging Damage,Minor,1,1986000.0,Accepted with Concession
+QA000008,2025-09-28,PO000064,POL0000064,P008,S013,Particle/Visual Defect,Minor,1,215000.0,Accepted with Concession
+QA000009,2025-10-26,PO000073,POL0000073,P002,S002,Specification Deviation,Major,1,325000.0,Accepted with Concession
+QA000010,2025-12-01,PO000081,POL0000081,P022,S007,Particle/Visual Defect,Minor,1,1630000.0,Accepted with Concession
+QA000011,2025-12-02,PO000083,POL0000083,P023,S007,Specification Deviation,Minor,1,1413000.0,Replacement Requested
+QA000012,2026-01-16,PO000128,POL0000128,P011,S003,Specification Deviation,Minor,1,195000.0,Accepted with Concession
+QA000013,2026-01-28,PO000126,POL0000126,P009,S015,Documentation Issue,Major,1,128000.0,Replacement Requested
+QA000014,2026-01-31,PO000107,POL0000107,P022,S007,Packaging Damage,Major,1,1597000.0,Return to Supplier
+QA000015,2026-02-02,PO000117,POL0000117,P019,S005,Packaging Damage,Major,1,218000.0,Replacement Requested
+QA000016,2026-02-15,PO000127,POL0000127,P010,S013,Packaging Damage,Minor,4,914000.0,Return to Supplier
+QA000017,2026-05-17,PO000185,POL0000185,P003,S003,Specification Deviation,Minor,1,184000.0,Rework
+QA000018,2026-05-20,PO000186,POL0000186,P001,S003,Documentation Issue,Minor,1,484000.0,Return to Supplier
+QA000019,2026-05-22,PO000188,POL0000188,P012,S014,Packaging Damage,Minor,1,180000.0,Replacement Requested
+QA000020,2026-07-01,PO000202,POL0000202,P006,S003,Packaging Damage,Major,2,793000.0,Accepted with Concession
+QA000021,2026-07-29,PO000213,POL0000213,P001,S003,Documentation Issue,Minor,1,501000.0,Accepted with Concession
+QA000022,2026-08-02,PO000203,POL0000203,P020,S005,Documentation Issue,Major,2,524000.0,Replacement Requested

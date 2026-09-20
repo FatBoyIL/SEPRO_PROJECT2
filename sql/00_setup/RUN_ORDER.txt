@@ -1,0 +1,69 @@
+PROJECT 2 - RUN ORDER
+
+00_SETUP
+  01_prerequisites_check.sql
+  02_run_order.sql
+
+01_FACT_INVENTORY_SNAPSHOT
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+02_FACT_INVENTORY_MOVEMENT
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+03_FACT_PURCHASE_ORDER
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+04_FACT_PURCHASE_ORDER_LINE
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+05_FACT_SHIPMENT
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+06_FACT_SHIPMENT_LINE
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+07_FACT_FULFILLMENT
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+08_MART_INVENTORY_RISK
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+09_MART_ORDER_AVAILABILITY_OTIF
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+10_MART_SUPPLIER_PERFORMANCE
+  01_create.sql
+  02_load.sql
+  03_validate.sql
+
+11_KPI_VALIDATION
+  01_validate_stockout_rate.sql
+  02_validate_inventory_coverage.sql
+  03_validate_customer_otif.sql
+  04_validate_availability_vs_otif.sql
+  05_validate_supplier_reliability.sql
+  06_validate_supplier_cost_tco.sql
+  07_validate_data_coverage.sql
+  08_project2_validation_stop_point.sql
+
+STOP HERE.
+NEXT STEP = EDA / STATISTICAL ANALYSIS.
+DO NOT BUILD POWER BI YET.

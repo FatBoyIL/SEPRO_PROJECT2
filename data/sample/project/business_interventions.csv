@@ -1,0 +1,3 @@
+﻿intervention_id,effective_date,project,intervention_name,description,target_kpis,measurement_note
+INT03,2026-05-01,Project 2,Filter safety stock policy increase,Raise safety stock and reorder point for critical filter SKUs.,Stockout Rate; OTIF; Inventory Value; DIO,Evaluate service-level gain versus added inventory carrying cost.
+INT04,2026-06-01,Project 2,Dual-source critical filters,Increase allocation to higher-reliability backup suppliers for filter SKUs.,Supplier OTIF; Lead Time; Expedite Cost; TCO,Compare supplier mix and landed/TCO before and after.

@@ -1,0 +1,9 @@
+﻿component,calculation,source,why_it_matters
+Merchandise Cost,quantity_ordered * unit_price_local * fx_rate_to_vnd,purchase_order_lines_raw.csv,Direct purchase price
+Freight Cost,freight_cost_vnd,purchase_order_lines_raw.csv,Inbound logistics
+Customs Cost,customs_cost_vnd,purchase_order_lines_raw.csv,Import-related cost
+Expedite Cost,expedite_cost_vnd,purchase_order_lines_raw.csv,Cost of urgent recovery / stockout pressure
+Quality Cost,SUM(estimated_quality_cost_vnd) by PO line,qa_events_raw.csv,Reject/rework/replacement impact
+Landed Cost,Merchandise + Freight + Customs + Expedite + Quality,Derived,Supplier comparison beyond unit price
+Estimated Holding Cost,Average inventory value * annual_holding_rate_pct * holding_days / 365,inventory_daily_snapshot_raw.csv + inventory_policy_history.csv,Working-capital cost proxy
+Estimated TCO,Landed Cost + Estimated Holding Cost,Derived,Use for supplier/product decision trade-off

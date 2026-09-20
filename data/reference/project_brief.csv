@@ -1,0 +1,11 @@
+﻿section,content
+Project Name,Inventory & Order Fulfillment Analytics
+Core Business Problem,Customer demand must be fulfilled on time without creating excessive inventory or choosing suppliers only on unit price.
+Primary Stakeholders,Purchasing Manager; Warehouse; Logistics; Sales Manager
+Primary Question,How can the company maintain product availability while controlling inventory and procurement cost?
+Analytical Focus,Stockout risk; inventory coverage; OTIF; supplier reliability; landed cost/TCO; critical SKU policy
+Showcase Analysis,Supplier unit price vs landed/TCO and service reliability
+Decision Trade-off,Availability vs inventory cost; purchase price vs supplier reliability; safety stock vs service level
+Measure Impact,Filter safety stock policy from 2026-05-01 and dual sourcing from 2026-06-01
+Recommended Dashboard Pages,Service Level; Inventory Risk; Supplier/TCO; Fulfillment; Intervention Impact
+Portfolio Positioning,Operational/supply-chain analytics project.

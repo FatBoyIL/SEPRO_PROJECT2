@@ -1,0 +1,19 @@
+﻿supplier_id,supplier_name,country,currency,payment_term,incoterm,planned_lead_time_days,baseline_otif,baseline_defect_rate,default_freight_mode
+S001,MediChem Malaysia,Malaysia,MYR,Net 30,CIF,24,0.95,0.012,Sea
+S002,PureLab Solutions,Malaysia,USD,Net 45,CIF,21,0.96,0.008,Sea
+S003,VietClean Manufacturing,Vietnam,VND,Net 30,DAP,8,0.97,0.01,Truck
+S004,Saigon Garment Tech,Vietnam,VND,Net 30,DAP,12,0.96,0.014,Truck
+S005,Asia PPE Manufacturing,Malaysia,USD,50% Deposit,EXW,35,0.9,0.02,Sea
+S006,Thai Protection Co,Thailand,USD,Net 30,FOB,28,0.93,0.016,Sea
+S007,Shenzhen Filter Industrial,China,USD,30% Deposit,FOB,42,0.82,0.028,Sea
+S008,Kuala Filtration Systems,MALAYSIA,USD,Net 45,CIF,23,0.95,0.012,Sea
+S009,Korea Precision Filter,South Korea,USD,Net 30,CIF,25,0.94,0.01,Sea
+S010,Nippon Sensor Works,Japan,JPY,Net 30,EXW,31,0.95,0.006,Air
+S011,German Process Components,Germany,EUR,Net 45,EXW,36,0.93,0.007,Air
+S012,Taiwan Automation Supply,Taiwan,USD,Net 30,FOB,28,0.92,0.011,Air
+S013,Guangdong Cleanroom Supply,China,USD,30% Deposit,FOB,37,0.86,0.024,Sea
+S014,Dong Nai Textile Services,vietnam,VND,Net 30,DAP,10,0.97,0.013,Truck
+S015, Penang Wiper Technologies  ,Malaysia,USD,Net 30,CIF,20,0.95,0.009,Sea
+S016,Hanoi Clean Supplies,Vietnam,VND,COD,DAP,6,0.94,0.018,Truck
+S017,Singapore Process Trading,Singapore,USD,Net 45,CIF,18,0.96,0.008,Air
+S018,Seoul Lab Components,Korea,USD,Net 30,CIF,22,0.95,0.009,Air

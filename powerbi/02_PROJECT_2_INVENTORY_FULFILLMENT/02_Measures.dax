@@ -1,0 +1,173 @@
+// ============================================================
+// PROJECT 2 - INVENTORY RISK
+// ============================================================
+
+P2 Products =
+DISTINCTCOUNT(mart_inventory_risk[product_key])
+
+P2 Stockout Rate =
+DIVIDE(
+    SUM(mart_inventory_risk[stockout_sku_warehouse_days]),
+    SUM(mart_inventory_risk[observed_sku_warehouse_days])
+)
+
+P2 Median Coverage Days =
+MEDIANX(
+    FILTER(mart_inventory_risk, NOT ISBLANK(mart_inventory_risk[inventory_coverage_days])),
+    mart_inventory_risk[inventory_coverage_days]
+)
+
+P2 Fulfillment Risk Rate =
+DIVIDE(
+    SUM(mart_inventory_risk[late_or_incomplete_line_count]),
+    SUM(mart_inventory_risk[eligible_fulfillment_line_count])
+)
+
+P2 Latest Inventory Value =
+VAR LatestMonth = MAX(mart_inventory_risk[month_start_date])
+RETURN
+CALCULATE(
+    SUM(mart_inventory_risk[avg_network_inventory_value_vnd]),
+    KEEPFILTERS(mart_inventory_risk[month_start_date] = LatestMonth)
+)
+
+P2 Warehouse Stockout Rate =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(fact_inventory_snapshot),
+        fact_inventory_snapshot[stockout_flag] = TRUE()
+    ),
+    COUNTROWS(fact_inventory_snapshot)
+)
+
+// ============================================================
+// AVAILABILITY & OTIF
+// ============================================================
+
+P2 Orders =
+DISTINCTCOUNT(mart_order_availability_otif[sales_order_id])
+
+P2 Delivered Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[delivered_flag] = TRUE()
+)
+
+P2 OTIF Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[delivered_flag] = TRUE(),
+    mart_order_availability_otif[otif_flag] = TRUE()
+)
+
+P2 Non OTIF Delivered Orders =
+[P2 Delivered Orders] - [P2 OTIF Orders]
+
+P2 Customer OTIF Rate =
+DIVIDE([P2 OTIF Orders], [P2 Delivered Orders])
+
+P2 Late Delivered Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[delivered_flag] = TRUE(),
+    mart_order_availability_otif[on_time_flag] = FALSE()
+)
+
+P2 Incomplete Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[complete_flag] = FALSE()
+)
+
+P2 Full Availability Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[availability_group] = "Available in full"
+)
+
+P2 Partial Availability Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[availability_group] = "Partially available"
+)
+
+P2 No Stock Orders =
+CALCULATE(
+    [P2 Orders],
+    mart_order_availability_otif[availability_group] = "No stock"
+)
+
+// ============================================================
+// SUPPLIER
+// ============================================================
+
+P2 PO Lines =
+COUNTROWS(mart_supplier_performance)
+
+P2 Received PO Lines =
+CALCULATE(
+    [P2 PO Lines],
+    mart_supplier_performance[received_flag] = TRUE()
+)
+
+P2 On Time Receipt Lines =
+CALCULATE(
+    [P2 PO Lines],
+    mart_supplier_performance[on_time_receipt_flag] = TRUE()
+)
+
+P2 Timely Receipt Rate =
+DIVIDE([P2 On Time Receipt Lines], [P2 Received PO Lines])
+
+P2 Supplier OTIF Proxy Rate =
+VAR Eligible =
+    CALCULATE(
+        COUNTROWS(mart_supplier_performance),
+        NOT ISBLANK(mart_supplier_performance[supplier_otif_proxy_flag])
+    )
+VAR PassCount =
+    CALCULATE(
+        COUNTROWS(mart_supplier_performance),
+        mart_supplier_performance[supplier_otif_proxy_flag] = TRUE()
+    )
+RETURN
+DIVIDE(PassCount, Eligible)
+
+P2 Avg Actual Lead Time Days =
+AVERAGEX(
+    FILTER(mart_supplier_performance, mart_supplier_performance[received_flag] = TRUE()),
+    mart_supplier_performance[actual_lead_time_days]
+)
+
+P2 Ordered Quantity =
+SUM(mart_supplier_performance[quantity_ordered])
+
+P2 Merchandise Cost =
+SUM(mart_supplier_performance[merchandise_cost_vnd])
+
+P2 Freight Cost =
+SUM(mart_supplier_performance[freight_cost_vnd])
+
+P2 Customs Cost =
+SUM(mart_supplier_performance[customs_cost_vnd])
+
+P2 Expedite Cost =
+SUM(mart_supplier_performance[expedite_cost_vnd])
+
+P2 Quality Cost =
+SUM(mart_supplier_performance[quality_cost_vnd])
+
+P2 Landed Cost =
+SUM(mart_supplier_performance[landed_cost_vnd])
+
+P2 Estimated Holding Cost =
+SUM(mart_supplier_performance[estimated_holding_cost_vnd])
+
+P2 Estimated TCO =
+SUM(mart_supplier_performance[estimated_tco_vnd])
+
+P2 Estimated TCO per Ordered Unit =
+DIVIDE([P2 Estimated TCO], [P2 Ordered Quantity])
+
+P2 Quality Cost Rate =
+DIVIDE([P2 Quality Cost], [P2 Merchandise Cost])
