@@ -6,9 +6,12 @@ This repository is the **Gold Layer** for Project 02 of my SEPRO Data Analytics 
 
 The upstream Silver Layer is maintained separately in:
 
+> The Silver Layer (for cleanning data) that I had been transfer into this repo, you may take a look to see my vision in DATA CLEANING:
+
 **Silver Layer repository:** https://github.com/FatBoyIL/SEPRO_Cleaning_Data
 
-**Power bi report in processing you could seek for that in power bi folder or you could see this instead:**
+
+**Power BI report in processing you could seek for that in power bi folder or you could see this instead:**
 
 https://drive.google.com/file/d/1aKpIxk63aqfpAHCrnGY1kwh3ppN67bp5/view
 
