@@ -1,0 +1,281 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "e6806300d129b04003cb",
+  "position": {
+    "x": 0,
+    "y": 618,
+    "z": 5000,
+    "height": 462,
+    "width": 1112,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "sales_order_line_id"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.sales_order_line_id",
+              "nativeQueryRef": "sales_order_line_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "sales_order_id"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.sales_order_id",
+              "nativeQueryRef": "sales_order_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "product_key"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.product_key",
+              "nativeQueryRef": "product_key"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pbi_p2_order_line_availability"
+                        }
+                      },
+                      "Property": "quantity_ordered"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pbi_p2_order_line_availability.quantity_ordered)",
+              "nativeQueryRef": "Sum of quantity_ordered"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pbi_p2_order_line_availability"
+                        }
+                      },
+                      "Property": "network_available_qty"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pbi_p2_order_line_availability.network_available_qty)",
+              "nativeQueryRef": "Sum of network_available_qty"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "requested_delivery_date"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.requested_delivery_date",
+              "nativeQueryRef": "requested_delivery_date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "completion_delivery_date"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.completion_delivery_date",
+              "nativeQueryRef": "completion_delivery_date"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "pbi_p2_order_line_availability"
+                        }
+                      },
+                      "Property": "late_delivery_days"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(pbi_p2_order_line_availability.late_delivery_days)",
+              "nativeQueryRef": "Sum of late_delivery_days"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "line_complete_flag"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.line_complete_flag",
+              "nativeQueryRef": "line_complete_flag"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "pbi_p2_order_line_availability"
+                    }
+                  },
+                  "Property": "line_on_time_flag"
+                }
+              },
+              "queryRef": "pbi_p2_order_line_availability.line_on_time_flag",
+              "nativeQueryRef": "line_on_time_flag"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.3
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2A4684'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'FlashyRows'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

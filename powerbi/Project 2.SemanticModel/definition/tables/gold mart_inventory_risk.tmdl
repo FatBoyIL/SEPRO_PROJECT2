@@ -1,0 +1,151 @@
+table 'gold mart_inventory_risk'
+	lineageTag: b7c04411-c6db-441a-b630-e98779a2b712
+
+	column month_start_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1e765c13-ddf8-4ae4-885c-cf902f849830
+		summarizeBy: none
+		sourceColumn: month_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		lineageTag: fa33f915-dd23-48aa-84e8-cb15236f6b07
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column observed_sku_warehouse_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 8842b197-24d9-4184-b181-4b88a98d9439
+		summarizeBy: sum
+		sourceColumn: observed_sku_warehouse_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column stockout_sku_warehouse_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 95c03ed7-9af9-4c21-a096-2f13a459ae10
+		summarizeBy: sum
+		sourceColumn: stockout_sku_warehouse_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column stockout_rate
+		dataType: double
+		lineageTag: 4d366b85-d84d-4eaa-b9a3-ce9b9e3fecd7
+		summarizeBy: sum
+		sourceColumn: stockout_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_network_on_hand_qty
+		dataType: double
+		lineageTag: 983c44c6-1c96-43ce-93c6-9dfd198e15f6
+		summarizeBy: sum
+		sourceColumn: avg_network_on_hand_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_network_available_qty
+		dataType: double
+		lineageTag: 28b0819b-3339-4f44-8e62-454a02a1be7e
+		summarizeBy: sum
+		sourceColumn: avg_network_available_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_network_inventory_value_vnd
+		dataType: double
+		lineageTag: 6079c1e6-c61a-4436-a798-af6816afbf2f
+		summarizeBy: sum
+		sourceColumn: avg_network_inventory_value_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column demand_window_days
+		dataType: int64
+		formatString: 0
+		lineageTag: a3a1d30d-8aac-43d7-84d7-5c34eae4af6c
+		summarizeBy: sum
+		sourceColumn: demand_window_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_daily_demand_60d
+		dataType: double
+		lineageTag: bb0decbd-f46a-4218-bff4-6d95ce6cd0b1
+		summarizeBy: sum
+		sourceColumn: avg_daily_demand_60d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column inventory_coverage_days
+		dataType: double
+		lineageTag: 37fc4c02-588f-41ec-8cff-c7f38dfbaaf7
+		summarizeBy: sum
+		sourceColumn: inventory_coverage_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column eligible_fulfillment_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d3de240-3f78-4f7d-b336-adb4cb4acf2e
+		summarizeBy: sum
+		sourceColumn: eligible_fulfillment_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column late_or_incomplete_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: a276e087-ab22-4318-a040-23bce911928c
+		summarizeBy: sum
+		sourceColumn: late_or_incomplete_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column fulfillment_risk_rate
+		dataType: double
+		lineageTag: f76575d6-64b9-4c39-a86d-90ca83d5a635
+		summarizeBy: sum
+		sourceColumn: fulfillment_risk_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'gold mart_inventory_risk' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-4F2KL18\MSSQLSERVER1", "SEPRO_Master_Prod"),
+				    gold_mart_inventory_risk = Source{[Schema="gold",Item="mart_inventory_risk"]}[Data]
+				in
+				    gold_mart_inventory_risk
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

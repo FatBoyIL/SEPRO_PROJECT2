@@ -1,0 +1,200 @@
+table 'gold mart_order_availability_otif'
+	lineageTag: 276a93b6-1044-4486-a229-fc4e210360c5
+
+	column sales_order_id
+		dataType: string
+		lineageTag: 24cf5bf6-1a1d-426f-8267-1a52b1972cd2
+		summarizeBy: none
+		sourceColumn: sales_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 66696a62-c8b0-4cec-8697-9e15356666b1
+		summarizeBy: sum
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a122ecef-a0d8-4387-972c-a4265246fc9c
+		summarizeBy: none
+		sourceColumn: order_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column requested_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 586e9bb7-fe2a-4b05-8295-da965015fff6
+		summarizeBy: none
+		sourceColumn: requested_delivery_date
+
+		variation Variation
+			isDefault
+			relationship: 404568fa-bfc3-4caa-8f33-fc7b6ff6c46f
+			defaultHierarchy: LocalDateTable_bbdb674d-4152-493d-a6a0-951f1d6c8d9c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: b1489b93-575e-45b8-8597-be8f6357dac6
+		summarizeBy: sum
+		sourceColumn: order_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column missing_snapshot_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: b2f539ae-7cbc-47a9-8c77-46ff35f78724
+		summarizeBy: sum
+		sourceColumn: missing_snapshot_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column available_in_full_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 36c820f1-d990-4bbc-a5ac-cf79f38aebde
+		summarizeBy: sum
+		sourceColumn: available_in_full_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column partial_available_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f1268d4-4b51-4f75-a09d-1c260839894f
+		summarizeBy: sum
+		sourceColumn: partial_available_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column no_stock_line_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 0326461d-6dbb-42cb-b4bf-bd829e51cf63
+		summarizeBy: sum
+		sourceColumn: no_stock_line_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_group
+		dataType: string
+		lineageTag: e55055a7-4cf5-4f88-8034-212f5b2e3877
+		summarizeBy: none
+		sourceColumn: availability_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_scope
+		dataType: string
+		lineageTag: ae8589a3-827c-487c-8751-2d6036b056d7
+		summarizeBy: none
+		sourceColumn: availability_scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_quantity_ordered
+		dataType: int64
+		formatString: 0
+		lineageTag: a65f1bba-8eda-49d1-b5a7-1e37eef36289
+		summarizeBy: sum
+		sourceColumn: order_quantity_ordered
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_quantity_shipped
+		dataType: int64
+		formatString: 0
+		lineageTag: cd9c01d1-59c7-4790-aa03-8a67a9d4d589
+		summarizeBy: sum
+		sourceColumn: order_quantity_shipped
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivered_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 460bd2d8-7c4c-484f-b7fc-3244cc8e0c4d
+		summarizeBy: none
+		sourceColumn: delivered_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column complete_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d9ddf884-7d0a-4542-88ee-ac7e2e9238fd
+		summarizeBy: none
+		sourceColumn: complete_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column final_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 89af4605-57ac-498d-a9ac-8348f7d10361
+		summarizeBy: none
+		sourceColumn: final_delivery_date
+
+		variation Variation
+			isDefault
+			relationship: deeee4f2-a296-4141-b3d7-f614a1fa3fa2
+			defaultHierarchy: LocalDateTable_82f9175b-2988-49cc-b64c-25033e888663.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column on_time_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 9eebd8c5-9686-4ee8-9eb4-e2a106a90444
+		summarizeBy: none
+		sourceColumn: on_time_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column otif_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 99139843-5895-4987-b938-f14f908ff2a6
+		summarizeBy: none
+		sourceColumn: otif_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column days_late
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f0ccb7c-f57b-459c-963b-16215b322099
+		summarizeBy: sum
+		sourceColumn: days_late
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold mart_order_availability_otif' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-4F2KL18\MSSQLSERVER1", "SEPRO_Master_Prod"),
+				    gold_mart_order_availability_otif = Source{[Schema="gold",Item="mart_order_availability_otif"]}[Data]
+				in
+				    gold_mart_order_availability_otif
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

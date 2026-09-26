@@ -1,0 +1,178 @@
+table pbi_p2_order_line_availability
+	lineageTag: ba020c19-2a8e-4ab9-afee-588f707b7d0c
+
+	column sales_order_line_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: 1ea1ee4c-397b-4de3-aa76-7dceae25cc2e
+		summarizeBy: none
+		sourceColumn: sales_order_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_order_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: bfb62334-945f-485f-9548-0ca186b9ff74
+		summarizeBy: none
+		sourceColumn: sales_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8cd7a071-9ce6-4bbc-88dc-87e967472b60
+		summarizeBy: sum
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date_key
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b01c8209-4311-43d0-8d47-2abafee29977
+		summarizeBy: sum
+		sourceColumn: order_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 94c95fc8-93df-41e8-b139-add81f520fae
+		summarizeBy: none
+		sourceColumn: order_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column requested_delivery_date
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: fe1f9c7f-1ec1-46f6-b73a-5d6b92a50126
+		summarizeBy: none
+		sourceColumn: requested_delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f5184cb0-5d93-45ce-b151-9856242b22eb
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity_ordered
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 23d14a84-00bd-4568-a1ba-049c27ebf334
+		summarizeBy: sum
+		sourceColumn: quantity_ordered
+
+		annotation SummarizationSetBy = Automatic
+
+	column network_on_hand_qty
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9783ff4f-9e60-4634-880d-ca1799cc9239
+		summarizeBy: sum
+		sourceColumn: network_on_hand_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column network_available_qty
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 19d2ad6d-3913-4e0d-b627-d570960e45d9
+		summarizeBy: sum
+		sourceColumn: network_available_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_availability_group
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(19)
+		lineageTag: c29aebcc-da2b-4fa9-874e-13309e0c57cf
+		summarizeBy: none
+		sourceColumn: line_availability_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity_shipped_total
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1641fb88-db6d-49f0-ac25-64280ab2276f
+		summarizeBy: sum
+		sourceColumn: quantity_shipped_total
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_complete_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 25715b7a-683f-44e4-b827-e9dbd1fa9f40
+		summarizeBy: none
+		sourceColumn: line_complete_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_on_time_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 9cb5edf3-7a41-4ab5-b3bf-2e1a30e4def6
+		summarizeBy: none
+		sourceColumn: line_on_time_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column completion_delivery_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: dcb14a03-5b1c-4da8-9da1-f077554b7c32
+		summarizeBy: none
+		sourceColumn: completion_delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column late_delivery_days
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 364525dc-430b-4638-a83a-8abcc814d08a
+		summarizeBy: sum
+		sourceColumn: late_delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pbi_p2_order_line_availability = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-4F2KL18\MSSQLSERVER1", "SEPRO_Master_Prod", [Query="SELECT#(lf)    sol.sales_order_line_id,#(lf)    so.sales_order_id,#(lf)    so.customer_key,#(lf)    so.order_date_key,#(lf)    so.order_date,#(lf)    so.requested_delivery_date,#(lf)#(lf)    sol.product_key,#(lf)    sol.quantity_ordered,#(lf)#(lf)    ni.network_on_hand_qty,#(lf)    ni.network_available_qty,#(lf)#(lf)    CASE#(lf)        WHEN ni.product_key IS NULL#(lf)            THEN 'Missing snapshot'#(lf)#(lf)        WHEN ni.network_available_qty >= sol.quantity_ordered#(lf)            THEN 'Available in full'#(lf)#(lf)        WHEN ni.network_available_qty > 0#(lf)            THEN 'Partially available'#(lf)#(lf)        ELSE 'No stock'#(lf)    END AS line_availability_group,#(lf)#(lf)    f.quantity_shipped_total,#(lf)    f.line_complete_flag,#(lf)    f.line_on_time_flag,#(lf)    f.completion_delivery_date,#(lf)    f.late_delivery_days#(lf)#(lf)FROM gold.fact_sales_order_line AS sol#(lf)#(lf)INNER JOIN gold.fact_sales_order AS so#(lf)    ON so.sales_order_id = sol.sales_order_id#(lf)#(lf)LEFT JOIN#(lf)(#(lf)    SELECT#(lf)        snapshot_date_key,#(lf)        product_key,#(lf)        SUM(available_qty) AS network_available_qty,#(lf)        SUM(on_hand_qty) AS network_on_hand_qty#(lf)    FROM gold.fact_inventory_snapshot#(lf)    GROUP BY#(lf)        snapshot_date_key,#(lf)        product_key#(lf)) AS ni#(lf)    ON ni.snapshot_date_key = so.order_date_key#(lf)   AND ni.product_key = sol.product_key#(lf)#(lf)LEFT JOIN gold.fact_fulfillment AS f#(lf)    ON f.sales_order_line_id = sol.sales_order_line_id"])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

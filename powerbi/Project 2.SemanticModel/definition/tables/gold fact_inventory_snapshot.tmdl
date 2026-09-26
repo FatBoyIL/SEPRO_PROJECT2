@@ -1,0 +1,126 @@
+table 'gold fact_inventory_snapshot'
+	lineageTag: 95d27f9a-bd51-4497-98fe-7ddf3ba12c61
+
+	column snapshot_date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 3acaa5f6-3c71-446c-b804-65747a17b3cd
+		summarizeBy: none
+		sourceColumn: snapshot_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 3decb16f-9d0e-43b2-82c4-a8efacf171e5
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column warehouse_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a7802b4-d9f6-45e5-ace8-a16501e62444
+		summarizeBy: none
+		sourceColumn: warehouse_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column on_hand_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 06bca231-db81-4087-a056-d03aaa6a72cc
+		summarizeBy: sum
+		sourceColumn: on_hand_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column on_order_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c2609b1-f853-4e5f-a88e-55be5511382a
+		summarizeBy: sum
+		sourceColumn: on_order_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column backlog_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: c7cc55f1-f982-47d3-93ae-27ab5481b394
+		summarizeBy: sum
+		sourceColumn: backlog_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column available_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: eea1bfc8-cb7f-4cc9-a626-e3e25fa021f9
+		summarizeBy: sum
+		sourceColumn: available_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_cost_vnd
+		dataType: double
+		lineageTag: 4f86e2ea-69db-401d-919f-f225ed19a6c8
+		summarizeBy: sum
+		sourceColumn: unit_cost_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column inventory_value_vnd
+		dataType: double
+		lineageTag: edfb68e0-a426-4768-a615-d66984e77f83
+		summarizeBy: sum
+		sourceColumn: inventory_value_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column stockout_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1f262d07-003a-421e-a567-608809724624
+		summarizeBy: none
+		sourceColumn: stockout_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column reorder_point_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 832dd16f-541e-4db6-a6ac-5cffb3b500a7
+		summarizeBy: sum
+		sourceColumn: reorder_point_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column safety_stock_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: c395bcf1-6e2c-4265-8580-0325be9deb14
+		summarizeBy: sum
+		sourceColumn: safety_stock_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_inventory_snapshot' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-4F2KL18\MSSQLSERVER1", "SEPRO_Master_Prod"),
+				    gold_fact_inventory_snapshot = Source{[Schema="gold",Item="fact_inventory_snapshot"]}[Data]
+				in
+				    gold_fact_inventory_snapshot
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

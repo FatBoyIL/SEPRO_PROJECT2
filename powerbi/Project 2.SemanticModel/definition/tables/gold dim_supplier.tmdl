@@ -1,0 +1,73 @@
+table 'gold dim_supplier'
+	lineageTag: ff7622d1-8dc5-439e-908c-2ee82f5c5249
+
+	column supplier_key
+		dataType: int64
+		formatString: 0
+		lineageTag: afa4c751-34a9-42fc-b4ba-1ebdb80d9afa
+		summarizeBy: none
+		sourceColumn: supplier_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: string
+		lineageTag: 330405f8-865e-4de0-bdf9-0145fb45baaf
+		summarizeBy: none
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_name
+		dataType: string
+		lineageTag: 94b964ca-aa5c-4536-82a4-2fa6ad387275
+		summarizeBy: none
+		sourceColumn: supplier_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 65010e07-148d-4d43-9e9c-d756ac97b570
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency
+		dataType: string
+		lineageTag: d4cb97a8-0169-4fe3-9caa-ef5d4ed48b50
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_term
+		dataType: string
+		lineageTag: 47717723-a04a-4510-86e1-4f3b26c3e72b
+		summarizeBy: none
+		sourceColumn: payment_term
+
+		annotation SummarizationSetBy = Automatic
+
+	column incoterm
+		dataType: string
+		lineageTag: 43652100-c955-4949-98f3-0fe81e1c3ffc
+		summarizeBy: none
+		sourceColumn: incoterm
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_supplier' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-4F2KL18\MSSQLSERVER1", "SEPRO_Master_Prod"),
+				    gold_dim_supplier = Source{[Schema="gold",Item="dim_supplier"]}[Data]
+				in
+				    gold_dim_supplier
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

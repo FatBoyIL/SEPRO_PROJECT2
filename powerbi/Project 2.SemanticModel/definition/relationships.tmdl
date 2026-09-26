@@ -1,0 +1,81 @@
+relationship b71b7fef-578d-4f5c-bcb4-d8d9996087ad
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'gold dim_date'.date
+	toColumn: LocalDateTable_402a354d-69b8-485d-808a-8fc5a0613daf.Date
+
+relationship fdfbd48b-e991-4549-9f21-b6635f525ecd
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold fact_inventory_snapshot'.snapshot_date_key
+	toColumn: 'gold dim_date'.date_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 2cd58bac-6cb3-46f0-80b9-a656ca91cb6a
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold fact_inventory_snapshot'.product_key
+	toColumn: 'gold dim_product'.product_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship c50b774e-7d3a-4fd1-8b11-0fd99e6a40d4
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold fact_inventory_snapshot'.warehouse_key
+	toColumn: 'gold dim_warehouse'.warehouse_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 2bcc21fd-a10c-4800-8b4f-db586c3293b1
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold mart_inventory_risk'.product_key
+	toColumn: 'gold dim_product'.product_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship e6f68174-81df-fb80-bb39-7cc9c4061080
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold mart_inventory_risk'.month_start_date
+	toColumn: 'gold dim_date'.date
+
+relationship 404568fa-bfc3-4caa-8f33-fc7b6ff6c46f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'gold mart_order_availability_otif'.requested_delivery_date
+	toColumn: LocalDateTable_bbdb674d-4152-493d-a6a0-951f1d6c8d9c.Date
+
+relationship deeee4f2-a296-4141-b3d7-f614a1fa3fa2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'gold mart_order_availability_otif'.final_delivery_date
+	toColumn: LocalDateTable_82f9175b-2988-49cc-b64c-25033e888663.Date
+
+relationship 21f44e1e-2fdb-ca0b-2d98-398cf4f0ba10
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold mart_order_availability_otif'.order_date
+	toColumn: 'gold dim_date'.date
+
+relationship 5cf0c244-fd94-85ec-1220-3510a80a226d
+	crossFilteringBehavior: bothDirections
+	fromColumn: pbi_p2_order_line_availability.product_key
+	toColumn: 'gold dim_product'.product_key
+
+relationship ebff817e-f623-cd78-86c0-7b82c1c00dc0
+	crossFilteringBehavior: bothDirections
+	fromColumn: pbi_p2_supplier_line_performance.supplier_key
+	toColumn: 'gold dim_supplier'.supplier_key
+
+relationship 3cac40cb-3a82-4a7c-4198-14d81a9d90df
+	crossFilteringBehavior: bothDirections
+	fromColumn: pbi_p2_supplier_line_performance.product_key
+	toColumn: 'gold dim_product'.product_key
+
+relationship f59938b1-61d6-760b-9749-c12e1a3abf63
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromColumn: pbi_p2_supplier_line_performance.po_date_key
+	toColumn: 'gold dim_date'.date_key
+
+relationship 19a0a916-bdd7-a1e7-b065-452e4d4ce27e
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold mart_order_availability_otif'.sales_order_id
+	toColumn: 'gold dim_customer'.customer_key
+

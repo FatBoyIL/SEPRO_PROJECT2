@@ -1,0 +1,65 @@
+table 'gold dim_customer'
+	lineageTag: a876071b-3eb6-4e2a-9097-684dd1b17165
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 687635ba-a49c-45a7-bf40-1f01b9fb8194
+		summarizeBy: sum
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: 084aa2c6-417a-4f26-b76a-c38993ea3311
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 8102f3e4-77aa-490e-bd10-600cdd0aa47e
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: bd9c71a0-7368-49fe-ac5d-b477a2432068
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column industry
+		dataType: string
+		lineageTag: 12ef5402-c6c3-4eb1-ac71-70b89449332c
+		summarizeBy: none
+		sourceColumn: industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column province
+		dataType: string
+		lineageTag: 9c143009-33fe-41a7-9e60-02b2efaa81cb
+		summarizeBy: none
+		sourceColumn: province
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_customer' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("DESKTOP-4F2KL18\MSSQLSERVER1", "SEPRO_Master_Prod"),
+				    gold_dim_customer = Source{[Schema="gold",Item="dim_customer"]}[Data]
+				in
+				    gold_dim_customer
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,226 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "08794f06493ed2503a0a",
+  "position": {
+    "x": 0,
+    "y": 252,
+    "z": 7000,
+    "height": 446,
+    "width": 1132,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_supplier"
+                    }
+                  },
+                  "Property": "supplier_name"
+                }
+              },
+              "queryRef": "gold dim_supplier.supplier_name",
+              "nativeQueryRef": "supplier_name",
+              "active": true
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier Ordered Quantity"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier Ordered Quantity",
+              "nativeQueryRef": "P2 Supplier Ordered Quantity"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier PO Lines"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier PO Lines",
+              "nativeQueryRef": "P2 Supplier PO Lines"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier Received PO Lines"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier Received PO Lines",
+              "nativeQueryRef": "P2 Supplier Received PO Lines"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier Avg Lead Time Days"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier Avg Lead Time Days",
+              "nativeQueryRef": "P2 Supplier Avg Lead Time Days"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier Procurement Cost"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier Procurement Cost",
+              "nativeQueryRef": "P2 Supplier Procurement Cost"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier Procurement Cost per Unit"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier Procurement Cost per Unit",
+              "nativeQueryRef": "P2 Supplier Procurement Cost per Unit",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "P2 Supplier Timely Receipt Rate"
+                }
+              },
+              "queryRef": "_Measures.P2 Supplier Timely Receipt Rate",
+              "nativeQueryRef": "P2 Supplier Timely Receipt Rate"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2F448F'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Supplier Reliability vs Cost'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#263890'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

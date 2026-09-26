@@ -1,0 +1,1112 @@
+table _Measures
+	lineageTag: 51d859af-d510-4415-a42d-d79025fe63e7
+
+	measure 'P2 Products' =
+			
+			DISTINCTCOUNT(
+			    'gold mart_inventory_risk'[product_key]
+			)
+		formatString: #,0
+		displayFolder: P2\01 Inventory Risk
+		lineageTag: 18213a4d-b481-41c3-b38e-2189b46c16fe
+
+	measure 'P2 Stockout Rate' =
+			
+			DIVIDE(
+			    SUM('gold mart_inventory_risk'[stockout_sku_warehouse_days]),
+			    SUM('gold mart_inventory_risk'[observed_sku_warehouse_days])
+			)
+		formatString: 0.0%
+		displayFolder: P2\01 Inventory Risk
+		lineageTag: 53b7a47a-64f6-4cfa-b3bd-df0a284ea8ad
+
+	measure 'P2 Median Coverage Days' =
+			
+			MEDIANX(
+			    FILTER(
+			        'gold mart_inventory_risk',
+			        NOT ISBLANK(
+			            'gold mart_inventory_risk'[inventory_coverage_days]
+			        )
+			    ),
+			    'gold mart_inventory_risk'[inventory_coverage_days]
+			)
+		formatString: 0.0
+		displayFolder: P2\01 Inventory Risk
+		lineageTag: 82158ba4-8282-42a6-8378-c9ccad79516a
+
+	measure 'P2 Fulfillment Risk Rate' =
+			
+			DIVIDE(
+			    SUM('gold mart_inventory_risk'[late_or_incomplete_line_count]),
+			    SUM('gold mart_inventory_risk'[eligible_fulfillment_line_count])
+			)
+		formatString: 0.0%
+		displayFolder: P2\01 Inventory Risk
+		lineageTag: 2915ce23-d1cb-4b21-bc7e-d0d552d8c01b
+
+	measure 'P2 Latest Inventory Value' = ```
+			
+			VAR LatestMonth =
+			    MAX(
+			        'gold mart_inventory_risk'[month_start_date]
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(
+			            'gold mart_inventory_risk'[avg_network_inventory_value_vnd]
+			        ),
+			        KEEPFILTERS(
+			            'gold mart_inventory_risk'[month_start_date]
+			                = LatestMonth
+			        )
+			    )
+			
+			```
+		formatString: #,0
+		displayFolder: P2\01 Inventory Risk
+		lineageTag: 9399944b-c50f-4557-86ac-c6878a9b30e5
+
+	measure 'P2 Warehouse Stockout Rate' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(
+			            'gold fact_inventory_snapshot'
+			        ),
+			        'gold fact_inventory_snapshot'[stockout_flag] = TRUE()
+			    ),
+			    COUNTROWS(
+			        'gold fact_inventory_snapshot'
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: P2\01 Inventory Risk
+		lineageTag: b5597b70-c346-4b9f-8028-7c79e3dcb750
+
+	measure 'P2 HTML Inventory KPI Strip' =
+			
+			VAR StockoutRate =
+			    FORMAT(
+			        [P2 Stockout Rate],
+			        "0.0%"
+			    )
+			
+			VAR CoverageDays =
+			    FORMAT(
+			        [P2 Median Coverage Days],
+			        "0.0"
+			    )
+			
+			VAR FulfillmentRisk =
+			    FORMAT(
+			        [P2 Fulfillment Risk Rate],
+			        "0.0%"
+			    )
+			
+			VAR InvValue =
+			    [P2 Latest Inventory Value]
+			
+			VAR InvValueText =
+			    SWITCH(
+			        TRUE(),
+			        ABS(InvValue) >= 1000000000,
+			            FORMAT(
+			                InvValue / 1000000000,
+			                "0.00"
+			            ) & "B VND",
+			
+			        ABS(InvValue) >= 1000000,
+			            FORMAT(
+			                InvValue / 1000000,
+			                "0.0"
+			            ) & "M VND",
+			
+			        FORMAT(
+			            InvValue,
+			            "#,0"
+			        ) & " VND"
+			    )
+			
+			RETURN
+			
+			"<div style='
+			font-family:Segoe UI,Arial,sans-serif;
+			display:flex;
+			gap:14px;
+			width:100%;
+			height:100%;
+			box-sizing:border-box;
+			'>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#FFE1DE 0%,#FFF0EE 100%);
+			border:1px solid #EFBAB5;
+			border-radius:14px;
+			padding:18px 22px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='font-size:13px;color:#657585;font-weight:600;'>
+			STOCKOUT RATE
+			</div>"
+			
+			& "<div style='font-size:34px;color:#C94F50;font-weight:750;margin-top:7px;'>"
+			& StockoutRate &
+			"</div>"
+			
+			& "<div style='font-size:12px;color:#6F7F90;margin-top:5px;'>
+			Network stockout exposure
+			</div>"
+			
+			& "</div>"
+			
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#D7F1EB 0%,#EAF9F5 100%);
+			border:1px solid #B1DDD3;
+			border-radius:14px;
+			padding:18px 22px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='font-size:13px;color:#657585;font-weight:600;'>
+			MEDIAN COVERAGE
+			</div>"
+			
+			& "<div style='font-size:34px;color:#10898B;font-weight:750;margin-top:7px;'>"
+			& CoverageDays &
+			" <span style='font-size:17px;'>days</span></div>"
+			
+			& "<div style='font-size:12px;color:#6F7F90;margin-top:5px;'>
+			Median inventory coverage
+			</div>"
+			
+			& "</div>"
+			
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#FFECC3 0%,#FFF5D9 100%);
+			border:1px solid #E8D092;
+			border-radius:14px;
+			padding:18px 22px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='font-size:13px;color:#657585;font-weight:600;'>
+			FULFILLMENT RISK
+			</div>"
+			
+			& "<div style='font-size:34px;color:#C88A18;font-weight:750;margin-top:7px;'>"
+			& FulfillmentRisk &
+			"</div>"
+			
+			& "<div style='font-size:12px;color:#6F7F90;margin-top:5px;'>
+			Late or incomplete lines
+			</div>"
+			
+			& "</div>"
+			
+			
+			&
+			
+			"<div style='
+			flex:1.15;
+			background:linear-gradient(135deg,#DCEAF5 0%,#EDF5FA 100%);
+			border:1px solid #B8D0E1;
+			border-radius:14px;
+			padding:18px 22px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='font-size:13px;color:#657585;font-weight:600;'>
+			LATEST INVENTORY VALUE
+			</div>"
+			
+			& "<div style='font-size:29px;color:#123047;font-weight:750;margin-top:10px;'>"
+			& InvValueText &
+			"</div>"
+			
+			& "<div style='font-size:12px;color:#6F7F90;margin-top:7px;'>
+			Latest month in current filter context
+			</div>"
+			
+			& "</div>"
+			
+			& "</div>"
+		displayFolder: P2\01 Inventory Risk\HTML
+		lineageTag: 378061c1-4fd6-436f-9bcd-6a37c742ce56
+
+	measure 'P2 HTML Inventory Takeaway' =
+			
+			VAR StockoutRate =
+			    FORMAT(
+			        [P2 Stockout Rate],
+			        "0.0%"
+			    )
+			
+			VAR Coverage =
+			    FORMAT(
+			        [P2 Median Coverage Days],
+			        "0.0"
+			    )
+			
+			VAR FulfillmentRisk =
+			    FORMAT(
+			        [P2 Fulfillment Risk Rate],
+			        "0.0%"
+			    )
+			
+			RETURN
+			
+			"<div style='
+			font-family:Segoe UI,Arial,sans-serif;
+			width:100%;
+			height:100%;
+			box-sizing:border-box;
+			background:linear-gradient(135deg,#E4F3EF 0%,#F4FAFC 100%);
+			border:1px solid #C5E1DB;
+			border-radius:16px;
+			padding:20px 24px;
+			display:flex;
+			align-items:center;
+			gap:24px;
+			'>"
+			
+			&
+			
+			"<div style='
+			width:7px;
+			height:70px;
+			background:linear-gradient(180deg,#159A9C,#65BFAE);
+			border-radius:8px;
+			flex-shrink:0;
+			'></div>"
+			
+			&
+			
+			"<div style='
+			width:235px;
+			min-width:235px;
+			'>"
+			
+			&
+			
+			"<div style='
+			font-size:13px;
+			font-weight:700;
+			letter-spacing:1px;
+			color:#159A9C;
+			margin-bottom:6px;
+			'>
+			INVENTORY INSIGHT
+			</div>"
+			
+			&
+			
+			"<div style='
+			font-size:23px;
+			font-weight:750;
+			color:#123047;
+			line-height:1.2;
+			'>
+			Key Operational Takeaway
+			</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"<div style='
+			width:1px;
+			height:70px;
+			background:#C5DDD9;
+			flex-shrink:0;
+			'></div>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			font-size:18px;
+			font-weight:600;
+			color:#42566A;
+			line-height:1.67;
+			'>"
+			
+			& "Stockout rate is <b style='color:#C94F50;background:#FFE3DF;border-radius:7px;padding:3px 8px;'>"
+			& StockoutRate &
+			"</b>, coverage is <b style='color:#10898B;background:#D8F1EC;border-radius:7px;padding:3px 8px;'>"
+			& Coverage &
+			" days</b>, and fulfillment risk is <b style='color:#C88A18;background:#FFF0C9;border-radius:7px;padding:3px 8px;'>"
+			& FulfillmentRisk &
+			"</b>."
+			
+			&
+			
+			"<div style='
+			font-size:15px;
+			font-weight:500;
+			color:#637783;
+			margin-top:11px;
+			line-height:1.45;
+			'>
+			Review high-risk warehouses and SKUs first.
+			</div>"
+			
+			& "</div>"
+			
+			& "</div>"
+		displayFolder: P2\01 Inventory Risk\HTML
+		lineageTag: 6d982829-d32f-405e-b297-2c20d9d05804
+
+	measure 'P2 Orders' =
+			
+			DISTINCTCOUNT(
+			    'gold mart_order_availability_otif'[sales_order_id]
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: 55f9d119-dbbd-476d-be7e-31e04eeacbb1
+
+	measure 'P2 Delivered Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[delivered_flag] = TRUE()
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: 22df5780-89f0-40d6-891b-e2efb18229b1
+
+	measure 'P2 OTIF Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[delivered_flag] = TRUE(),
+			    'gold mart_order_availability_otif'[otif_flag] = TRUE()
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: abeee04c-863f-4d41-9880-6bc024f714b7
+
+	measure 'P2 Non OTIF Delivered Orders' = ```
+			
+			[P2 Delivered Orders]
+			-
+			[P2 OTIF Orders]
+			
+			```
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: f832707b-99c0-40f9-a0a2-b2d42e983340
+
+	measure 'P2 Customer OTIF Rate' =
+			
+			DIVIDE(
+			    [P2 OTIF Orders],
+			    [P2 Delivered Orders]
+			)
+		formatString: 0.0%
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: 0bfcdb21-2af2-43fb-9b2c-b45e93e012d2
+
+	measure 'P2 Late Delivered Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[delivered_flag] = TRUE(),
+			    'gold mart_order_availability_otif'[on_time_flag] = FALSE()
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: ac25031a-b1db-4a94-9023-3d325d18a558
+
+	measure 'P2 Incomplete Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[complete_flag] = FALSE()
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: 63f37ef5-820d-490d-b6e8-76bdf4fc5e23
+
+	measure 'P2 Full Availability Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[availability_group]
+			        = "Available in full"
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: 4eb0831e-de3a-44ec-a406-61bdec70e094
+
+	measure 'P2 Partial Availability Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[availability_group]
+			        = "Partially available"
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: 8536d5e3-bff1-4071-87b4-9e3f4d9826e8
+
+	measure 'P2 No Stock Orders' =
+			
+			CALCULATE(
+			    [P2 Orders],
+			    'gold mart_order_availability_otif'[availability_group]
+			        = "No stock"
+			)
+		formatString: #,0
+		displayFolder: P2\02 Availability & OTIF
+		lineageTag: b6dfcb0e-9200-4ac8-8f77-14b900e3c206
+
+	measure 'P2 Supplier PO Lines' =
+			
+			DISTINCTCOUNT(
+			    pbi_p2_supplier_line_performance[purchase_order_line_id]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Reliability
+		lineageTag: ef17c25a-cd06-4763-becc-1cc8a7058e17
+
+	measure 'P2 Supplier Received PO Lines' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(
+			        'pbi_p2_supplier_line_performance'[purchase_order_line_id]
+			    ),
+			    'pbi_p2_supplier_line_performance'[received_flag] = 1
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Reliability
+		lineageTag: ee3814d3-6046-4973-8604-35683cf342da
+
+	measure 'P2 Supplier Timely Receipt Lines' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(
+			        'pbi_p2_supplier_line_performance'[purchase_order_line_id]
+			    ),
+			    'pbi_p2_supplier_line_performance'[received_flag] = 1,
+			    'pbi_p2_supplier_line_performance'[timely_receipt_flag] = 1
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Reliability
+		lineageTag: ca06d24c-d7a3-466c-aca4-0bfeff06391d
+
+	measure 'P2 Supplier Timely Receipt Rate' =
+			
+			DIVIDE(
+			    [P2 Supplier Timely Receipt Lines],
+			    [P2 Supplier Received PO Lines],
+			    0
+			)
+		formatString: 0.0%
+		displayFolder: P2\03 Supplier Reliability
+		lineageTag: 978879e3-2a98-4251-ac7a-6c9a0640c2f9
+
+	measure 'P2 Supplier Avg Lead Time Days' =
+			
+			CALCULATE(
+			    AVERAGE(
+			        'pbi_p2_supplier_line_performance'[actual_lead_time_days]
+			    ),
+			    'pbi_p2_supplier_line_performance'[received_flag] = 1
+			)
+		formatString: 0.0
+		displayFolder: P2\03 Supplier Reliability
+		lineageTag: a2627e83-709d-4d86-af37-15ef8cb292bc
+
+	measure 'P2 Supplier Ordered Quantity' =
+			
+			SUM(
+			    'pbi_p2_supplier_line_performance'[quantity_ordered]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: 59d36086-3e40-4c34-95b3-c9d2303ab8b1
+
+	measure 'P2 Supplier Merchandise Cost' =
+			
+			SUM(
+			    'pbi_p2_supplier_line_performance'[merchandise_cost_vnd]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: 63cc2f40-06ce-4e92-81c5-58885ee0c02e
+
+	measure 'P2 Supplier Freight Cost' =
+			
+			SUM(
+			    'pbi_p2_supplier_line_performance'[freight_cost_vnd]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: 136b83fe-ca70-4089-8021-cc76893438a4
+
+	measure 'P2 Supplier Customs Cost' =
+			
+			SUM(
+			    'pbi_p2_supplier_line_performance'[customs_cost_vnd]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: d2b70269-1048-42b2-951b-3044c0977cdf
+
+	measure 'P2 Supplier Expedite Cost' =
+			
+			SUM(
+			    'pbi_p2_supplier_line_performance'[expedite_cost_vnd]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: 83dd631f-99f1-455a-9e3b-0c170643d661
+
+	measure 'P2 Supplier Procurement Cost' =
+			
+			SUM(
+			    'pbi_p2_supplier_line_performance'[procurement_cost_vnd]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: ce1137d8-e9ed-4c8a-bf83-3fd4c2e5cf51
+
+	measure 'P2 Supplier Procurement Cost per Unit' =
+			
+			DIVIDE(
+			    [P2 Supplier Procurement Cost],
+			    [P2 Supplier Ordered Quantity]
+			)
+		formatString: #,0
+		displayFolder: P2\03 Supplier Cost
+		lineageTag: cdb1c317-31cd-4ce3-b863-e4d3b0a21aac
+
+	measure 'P2 HTML OTIF KPI Strip' =
+			
+			VAR OTIF =
+			    FORMAT([P2 Customer OTIF Rate], "0.0%")
+			
+			VAR FullAvail =
+			    FORMAT([P2 Full Availability Orders], "#,0")
+			
+			VAR PartialAvail =
+			    FORMAT([P2 Partial Availability Orders], "#,0")
+			
+			VAR NoStock =
+			    FORMAT([P2 No Stock Orders], "#,0")
+			
+			VAR LateOrders =
+			    FORMAT([P2 Late Delivered Orders], "#,0")
+			
+			RETURN
+			
+			"<div style='
+			font-family:Segoe UI,Arial,sans-serif;
+			display:flex;
+			gap:14px;
+			width:100%;
+			height:100%;
+			box-sizing:border-box;
+			'>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#D2EEE8 0%,#E5F7F3 100%);
+			border:1px solid #A9D9D0;
+			border-radius:14px;
+			padding:18px 20px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#4F6F72;
+			font-weight:600;
+			'>CUSTOMER OTIF RATE</div>"
+			
+			& "<div style='
+			font-size:34px;
+			font-weight:750;
+			color:#08796E;
+			margin-top:7px;
+			'>"
+			& OTIF &
+			"</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#D7EAFB 0%,#EAF4FD 100%);
+			border:1px solid #B5D4EE;
+			border-radius:14px;
+			padding:18px 20px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#526B80;
+			font-weight:600;
+			'>FULL AVAILABILITY</div>"
+			
+			& "<div style='
+			font-size:34px;
+			font-weight:750;
+			color:#1D6598;
+			margin-top:7px;
+			'>"
+			& FullAvail &
+			"</div>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#647D91;
+			'>orders</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#FBE9B9 0%,#FFF2D2 100%);
+			border:1px solid #E7CF8D;
+			border-radius:14px;
+			padding:18px 20px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#756743;
+			font-weight:600;
+			'>PARTIAL AVAILABILITY</div>"
+			
+			& "<div style='
+			font-size:34px;
+			font-weight:750;
+			color:#BD7E13;
+			margin-top:7px;
+			'>"
+			& PartialAvail &
+			"</div>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#887653;
+			'>orders</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#F9D8D5 0%,#FDEAE8 100%);
+			border:1px solid #E8B8B3;
+			border-radius:14px;
+			padding:18px 20px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#805F5D;
+			font-weight:600;
+			'>NO STOCK</div>"
+			
+			& "<div style='
+			font-size:34px;
+			font-weight:750;
+			color:#C34D4D;
+			margin-top:7px;
+			'>"
+			& NoStock &
+			"</div>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#8A6C69;
+			'>orders</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			background:linear-gradient(135deg,#E6DDF7 0%,#F1ECFC 100%);
+			border:1px solid #CFC0EA;
+			border-radius:14px;
+			padding:18px 20px;
+			box-sizing:border-box;
+			'>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#6F6484;
+			font-weight:600;
+			'>LATE DELIVERED</div>"
+			
+			& "<div style='
+			font-size:34px;
+			font-weight:750;
+			color:#6549A2;
+			margin-top:7px;
+			'>"
+			& LateOrders &
+			"</div>"
+			
+			& "<div style='
+			font-size:12px;
+			color:#786E91;
+			'>orders</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"</div>"
+		displayFolder: P2\02 Availability & OTIF\HTML
+		lineageTag: d450c10c-1bdd-400a-9c4d-25171e18a2af
+
+	measure 'P2 HTML OTIF Takeaway' =
+			
+			VAR OTIF =
+			    FORMAT(
+			        [P2 Customer OTIF Rate],
+			        "0.0%"
+			    )
+			
+			VAR LateOrders =
+			    FORMAT(
+			        [P2 Late Delivered Orders],
+			        "#,0"
+			    )
+			
+			VAR Incomplete =
+			    FORMAT(
+			        [P2 Incomplete Orders],
+			        "#,0"
+			    )
+			
+			RETURN
+			
+			"<div style='
+			font-family:Segoe UI,Arial,sans-serif;
+			width:100%;
+			height:100%;
+			box-sizing:border-box;
+			background:linear-gradient(135deg,#E4F3EF 0%,#F4FAFC 100%);
+			border:1px solid #C5E1DB;
+			border-radius:16px;
+			padding:20px 24px;
+			display:flex;
+			align-items:center;
+			gap:24px;
+			'>"
+			
+			&
+			
+			"<div style='
+			width:7px;
+			height:70px;
+			background:linear-gradient(180deg,#159A9C,#65BFAE);
+			border-radius:8px;
+			flex-shrink:0;
+			'></div>"
+			
+			&
+			
+			"<div style='
+			width:235px;
+			min-width:235px;
+			'>"
+			
+			&
+			
+			"<div style='
+			font-size:13px;
+			font-weight:700;
+			letter-spacing:1px;
+			color:#159A9C;
+			margin-bottom:6px;
+			'>
+			DELIVERY PERFORMANCE
+			</div>"
+			
+			&
+			
+			"<div style='
+			font-size:23px;
+			font-weight:750;
+			color:#123047;
+			line-height:1.2;
+			'>
+			Key Takeaway
+			</div>"
+			
+			& "</div>"
+			
+			&
+			
+			"<div style='
+			width:1px;
+			height:70px;
+			background:#C5DDD9;
+			flex-shrink:0;
+			'></div>"
+			
+			&
+			
+			"<div style='
+			flex:1;
+			font-size:18px;
+			font-weight:600;
+			color:#42566A;
+			line-height:1.67;
+			'>"
+			
+			& "Customer OTIF is <b style='
+			color:#128C7E;
+			background:#D8F1EC;
+			border-radius:7px;
+			padding:3px 8px;
+			'>"
+			& OTIF &
+			"</b>. There are <b style='
+			color:#C46F00;
+			background:#FFF0C9;
+			border-radius:7px;
+			padding:3px 8px;
+			'>"
+			& LateOrders &
+			" late orders</b> and <b style='
+			color:#C94F50;
+			background:#FFE3DF;
+			border-radius:7px;
+			padding:3px 8px;
+			'>"
+			& Incomplete &
+			" incomplete orders</b>."
+			
+			&
+			
+			"<div style='
+			font-size:15px;
+			font-weight:500;
+			color:#637783;
+			margin-top:11px;
+			line-height:1.45;
+			'>
+			Compare OTIF by availability group and inspect affected order lines first.
+			</div>"
+			
+			& "</div>"
+			
+			& "</div>"
+		displayFolder: P2\02 Availability & OTIF\HTML
+		lineageTag: 1e975162-c861-4d7b-86f6-728cec9e74a1
+
+	measure 'P2 HTML Supplier KPI Strip' =
+			
+			VAR POLines =
+			    COALESCE([P2 Supplier PO Lines], 0)
+			
+			VAR ReceivedLines =
+			    COALESCE([P2 Supplier Received PO Lines], 0)
+			
+			VAR TimelyRate =
+			    COALESCE([P2 Supplier Timely Receipt Rate], 0)
+			
+			VAR LeadTime =
+			    COALESCE([P2 Supplier Avg Lead Time Days], 0)
+			
+			VAR UnitCost =
+			    COALESCE([P2 Supplier Procurement Cost per Unit], 0)
+			
+			VAR POLinesText =
+			    FORMAT(POLines, "#,0")
+			
+			VAR ReceivedText =
+			    FORMAT(ReceivedLines, "#,0")
+			
+			VAR TimelyRateText =
+			    FORMAT(TimelyRate, "0.0%")
+			
+			VAR LeadTimeText =
+			    FORMAT(LeadTime, "0.0")
+			
+			VAR UnitCostText =
+			    SWITCH(
+			        TRUE(),
+			        ABS(UnitCost) >= 1000000000,
+			            FORMAT(UnitCost / 1000000000, "0.00") & "B VND",
+			        ABS(UnitCost) >= 1000000,
+			            FORMAT(UnitCost / 1000000, "0.0") & "M VND",
+			        ABS(UnitCost) >= 1000,
+			            FORMAT(UnitCost / 1000, "0.0") & "K VND",
+			        FORMAT(UnitCost, "#,0") & " VND"
+			    )
+			
+			RETURN
+			"
+			<div style='
+			    font-family:Segoe UI,Arial,sans-serif;
+			    display:flex;
+			    gap:14px;
+			    width:100%;
+			    height:100%;
+			    box-sizing:border-box;
+			'>
+			
+			    <div style='
+			        flex:1;
+			        background:#F5F8FB;
+			        border:1px solid #DEE7EE;
+			        border-radius:14px;
+			        padding:18px 20px;
+			    '>
+			        <div style='font-size:12px;color:#607080;font-weight:600;'>
+			            PO LINES
+			        </div>
+			        <div style='font-size:34px;font-weight:700;color:#123047;margin-top:7px;'>
+			            " & POLinesText & "
+			        </div>
+			    </div>
+			
+			    <div style='
+			        flex:1;
+			        background:#F1F8FF;
+			        border:1px solid #DCEBFA;
+			        border-radius:14px;
+			        padding:18px 20px;
+			    '>
+			        <div style='font-size:12px;color:#607080;font-weight:600;'>
+			            RECEIVED PO LINES
+			        </div>
+			        <div style='font-size:34px;font-weight:700;color:#2478B5;margin-top:7px;'>
+			            " & ReceivedText & "
+			        </div>
+			    </div>
+			
+			    <div style='
+			        flex:1.15;
+			        background:#EEF8F6;
+			        border:1px solid #D8ECE7;
+			        border-radius:14px;
+			        padding:18px 20px;
+			    '>
+			        <div style='font-size:12px;color:#607080;font-weight:600;'>
+			            TIMELY RECEIPT RATE
+			        </div>
+			        <div style='font-size:34px;font-weight:700;color:#128C7E;margin-top:7px;'>
+			            " & TimelyRateText & "
+			        </div>
+			    </div>
+			
+			    <div style='
+			        flex:1;
+			        background:#FFF9ED;
+			        border:1px solid #F3E5C5;
+			        border-radius:14px;
+			        padding:18px 20px;
+			    '>
+			        <div style='font-size:12px;color:#607080;font-weight:600;'>
+			            AVG LEAD TIME
+			        </div>
+			        <div style='font-size:34px;font-weight:700;color:#D89822;margin-top:7px;'>
+			            " & LeadTimeText & "
+			            <span style='font-size:15px;font-weight:600;'> days</span>
+			        </div>
+			    </div>
+			
+			    <div style='
+			        flex:1.25;
+			        background:#FFF3F2;
+			        border:1px solid #F3DAD7;
+			        border-radius:14px;
+			        padding:18px 20px;
+			    '>
+			        <div style='font-size:12px;color:#607080;font-weight:600;'>
+			            COST / ORDERED UNIT
+			        </div>
+			        <div style='font-size:28px;font-weight:700;color:#D95C5C;margin-top:10px;'>
+			            " & UnitCostText & "
+			        </div>
+			    </div>
+			
+			</div>
+			"
+		displayFolder: P2\03 Supplier Reliability\HTML
+		lineageTag: ea1c09d5-4694-400e-9298-51b9f9ba5dda
+
+	measure 'P2 HTML Supplier Takeaway' = ```
+			
+			VAR Timely =
+			    FORMAT([P2 Supplier Timely Receipt Rate], "0.0%")
+			
+			VAR LeadTime =
+			    FORMAT([P2 Supplier Avg Lead Time Days], "0.0")
+			
+			VAR CostUnit =
+			    FORMAT([P2 Supplier Procurement Cost per Unit], "#,0")
+			
+			RETURN
+			
+			"<div style='font-family:Segoe UI,Arial,sans-serif;
+			width:100%;height:100%;box-sizing:border-box;
+			background:linear-gradient(90deg,#EEF9F7,#F6FAFC);
+			border:1px solid #D9EBE7;border-radius:14px;
+			padding:14px 22px;display:flex;align-items:center;gap:24px;'>
+			
+			<div style='font-size:17px;font-weight:750;color:#123047;
+			min-width:190px;'>Key Supplier Takeaway</div>
+			
+			<div style='border-left:1px solid #D5E6E2;padding-left:20px;
+			font-size:13px;color:#43576A;line-height:1.5;'>
+			
+			Current context shows <b style='color:#128C7E;'>"
+			& Timely &
+			" timely receipt</b>, average actual lead time of <b>"
+			& LeadTime &
+			" days</b>, and procurement cost per ordered unit of <b>"
+			& CostUnit &
+			" VND</b>. Evaluate reliability and cost together rather than selecting suppliers on unit cost alone.
+			
+			</div>
+			
+			</div>"
+			
+			```
+		displayFolder: P2\03 Supplier Reliability\HTML
+		lineageTag: a14f775a-b218-4b3a-b68a-d9e4e294f693
+
+	column Value
+		lineageTag: 33328b15-32a1-4f64-8481-49a51d99c5de
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition _Measures = calculated
+		mode: import
+		source = {0}
+

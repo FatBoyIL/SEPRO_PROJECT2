@@ -1,0 +1,37 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: vi-VN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["gold dim_date","gold dim_product","gold dim_warehouse","gold fact_inventory_snapshot","gold mart_inventory_risk","gold dim_supplier","gold mart_order_availability_otif","gold dim_customer","pbi_p2_supplier_line_performance","pbi_p2_order_line_availability"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation __TEdtr = 1
+
+annotation PBI_RemovedChildren = [{"remoteItemId":{"foreignKeyRelationship":{"fromTableLocalLineageTag":"276a93b6-1044-4486-a229-fc4e210360c5","fromColumnLocalLineageTag":"66696a62-c8b0-4cec-8697-9e15356666b1","toTableLocalLineageTag":"a876071b-3eb6-4e2a-9097-684dd1b17165","toColumnLocalLineageTag":"687635ba-a49c-45a7-bf40-1f01b9fb8194"}},"objectType":"Relationship"}]
+
+ref table 'gold dim_date'
+ref table DateTableTemplate_6950dd08-bca8-4689-9225-3587f139eb7a
+ref table LocalDateTable_402a354d-69b8-485d-808a-8fc5a0613daf
+ref table 'gold dim_product'
+ref table 'gold dim_warehouse'
+ref table 'gold fact_inventory_snapshot'
+ref table 'gold mart_inventory_risk'
+ref table _Measures
+ref table 'gold dim_supplier'
+ref table 'gold mart_order_availability_otif'
+ref table LocalDateTable_bbdb674d-4152-493d-a6a0-951f1d6c8d9c
+ref table LocalDateTable_82f9175b-2988-49cc-b64c-25033e888663
+ref table 'gold dim_customer'
+ref table pbi_p2_supplier_line_performance
+ref table pbi_p2_order_line_availability
+
+ref cultureInfo en-US
+

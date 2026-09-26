@@ -1,0 +1,295 @@
+table pbi_p2_supplier_line_performance
+	lineageTag: 6e3ec775-921a-4ffe-a92a-09f2a82d2207
+
+	column purchase_order_line_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(100)
+		lineageTag: fe68c0ab-0477-4462-a23d-7e57241dcf1d
+		summarizeBy: none
+		sourceColumn: purchase_order_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(100)
+		lineageTag: 3b441e00-e15e-4502-95e4-dc73853003b6
+		summarizeBy: none
+		sourceColumn: purchase_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_key
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6c9e24af-9794-4115-a730-75d34422b5a7
+		summarizeBy: none
+		sourceColumn: supplier_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 7d07836d-c19c-4015-91cb-e4464461e912
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_date_key
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4ae0af95-998d-409f-b4be-1d7d05403425
+		summarizeBy: sum
+		sourceColumn: po_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_date
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 9b8a6d6f-c540-40bc-b4cd-a0ece72e84ad
+		summarizeBy: none
+		sourceColumn: po_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column expected_receipt_date
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 46fa0aa3-da88-4b12-83a6-8d47b4cfd285
+		summarizeBy: none
+		sourceColumn: expected_receipt_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_receipt_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: fc70f663-0cda-4c96-9c29-6550e233d03e
+		summarizeBy: none
+		sourceColumn: actual_receipt_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity_ordered
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d9a5f796-75c5-426c-9e21-fa7d87118c07
+		summarizeBy: sum
+		sourceColumn: quantity_ordered
+
+		annotation SummarizationSetBy = Automatic
+
+	column freight_cost_vnd
+		dataType: int64
+		isNullable: false
+		sourceProviderType: bigint
+		lineageTag: 05d7dbd8-0295-4baa-a0d6-eecb016ec78a
+		summarizeBy: sum
+		sourceColumn: freight_cost_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customs_cost_vnd
+		dataType: int64
+		isNullable: false
+		sourceProviderType: bigint
+		lineageTag: 823c6b4d-b548-4eb9-b256-dcf8fb9206c1
+		summarizeBy: sum
+		sourceColumn: customs_cost_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column expedite_cost_vnd
+		dataType: int64
+		isNullable: false
+		sourceProviderType: bigint
+		lineageTag: 57060665-cb25-4822-b8f3-da351b9c2348
+		summarizeBy: sum
+		sourceColumn: expedite_cost_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column procurement_cost_vnd
+		dataType: int64
+		sourceProviderType: bigint
+		lineageTag: e257d457-52ed-46ff-9ebb-3d1bc182d2cf
+		summarizeBy: sum
+		sourceColumn: procurement_cost_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column received_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 73d0ded0-29c7-446c-8b4f-c1d9061722fd
+		summarizeBy: sum
+		sourceColumn: received_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column timely_receipt_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: fd5e03ed-1f02-46e0-a1f0-683bc87ad4ab
+		summarizeBy: sum
+		sourceColumn: timely_receipt_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_lead_time_days
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 98bf145a-4202-4368-9252-97b8780f5322
+		summarizeBy: sum
+		sourceColumn: actual_lead_time_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column late_receipt_days
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ed5cb476-a44d-45ef-9356-bef843367c32
+		summarizeBy: sum
+		sourceColumn: late_receipt_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_status
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(4000)
+		lineageTag: 5b887109-3ce1-4491-ae42-01730d7f3546
+		summarizeBy: none
+		sourceColumn: po_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchandise_cost_vnd
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 1785b14c-fd43-4e4d-abfe-ad3f0d9bbe9e
+		summarizeBy: sum
+		sourceColumn: merchandise_cost_vnd
+
+		annotation SummarizationSetBy = Automatic
+
+	partition pbi_p2_supplier_line_performance = m
+		mode: directQuery
+		source =
+				let
+				    Source =
+				        Sql.Database(
+				            "DESKTOP-4F2KL18\MSSQLSERVER1",
+				            "SEPRO_Master_Prod",
+				            [
+				                Query = "
+				SELECT
+				    pol.purchase_order_line_id,
+				    pol.purchase_order_id,
+				
+				    ds.supplier_key,
+				    dp.product_key,
+				    dd.date_key AS po_date_key,
+				
+				    po.po_date,
+				    po.expected_receipt_date,
+				    po.actual_receipt_date,
+				    po.po_status,
+				
+				    pol.quantity_ordered,
+				
+				    pol.merchandise_value_vnd AS merchandise_cost_vnd,
+				    pol.freight_cost_vnd,
+				    pol.customs_cost_vnd,
+				    pol.expedite_cost_vnd,
+				
+				    pol.merchandise_value_vnd
+				        + pol.freight_cost_vnd
+				        + pol.customs_cost_vnd
+				        + pol.expedite_cost_vnd AS procurement_cost_vnd,
+				
+				    CASE
+				        WHEN po.po_status = 'Received'
+				        THEN 1 ELSE 0
+				    END AS received_flag,
+				
+				    CASE
+				        WHEN po.po_status = 'Received'
+				         AND po.actual_receipt_date <= po.expected_receipt_date
+				        THEN 1 ELSE 0
+				    END AS timely_receipt_flag,
+				
+				    CASE
+				        WHEN po.po_status = 'Received'
+				        THEN DATEDIFF(DAY, po.po_date, po.actual_receipt_date)
+				        ELSE 0
+				    END AS actual_lead_time_days,
+				
+				    CASE
+				        WHEN po.po_status = 'Received'
+				         AND po.actual_receipt_date > po.expected_receipt_date
+				        THEN DATEDIFF(
+				            DAY,
+				            po.expected_receipt_date,
+				            po.actual_receipt_date
+				        )
+				        ELSE 0
+				    END AS late_receipt_days
+				
+				FROM silver.purchase_order_lines AS pol
+				
+				INNER JOIN silver.purchase_orders AS po
+				    ON pol.purchase_order_id = po.purchase_order_id
+				
+				LEFT JOIN gold.dim_supplier AS ds
+				    ON po.supplier_id = ds.supplier_id
+				
+				LEFT JOIN gold.dim_product AS dp
+				    ON pol.product_id = dp.product_id
+				
+				LEFT JOIN gold.dim_date AS dd
+				    ON po.po_date = dd.[date]
+				"
+				            ]
+				        )
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
