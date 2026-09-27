@@ -1,144 +1,208 @@
-# SEPRO 02 — Inventory & Order Fulfillment Analytics
+# 📦 SEPRO 02 — Inventory & Order Fulfillment Analytics
 
 **Gold Layer | Operations & Supply Chain Analytics | SQL Server + Power BI**
 
-This repository is the **Gold Layer** for Project 02 of my SEPRO Data Analytics Portfolio. It starts where Project 01 ends: a customer has already placed a Sales Order, and the analytical problem becomes whether demand can be fulfilled reliably without creating excessive inventory or choosing suppliers only on purchase price.
+Analyzed the operational flow after a customer places an order to understand **inventory risk, fulfillment reliability, Customer OTIF, and supplier cost-reliability trade-offs**.
 
-The upstream Silver Layer is maintained separately in:
+---
 
-> The Silver Layer (for cleanning data) that I had been transfer into this repo, you may take a look to see my vision in DATA CLEANING:
+## 📊 Key Analytical Outcomes
 
-**Silver Layer repository:** https://github.com/FatBoyIL/SEPRO_Cleaning_Data
-
-
-**Power BI layout**
-
-<img width="6150" height="3525" alt="Project 2 (1)_page-0001" src="https://github.com/user-attachments/assets/84308745-4bf0-4864-b479-1e73b3776406" />
-<img width="6150" height="3525" alt="Project 2 (1)_page-0002" src="https://github.com/user-attachments/assets/86748e8b-3ff3-4ecf-9069-4b924ddd17bf" />
-<img width="6150" height="3525" alt="Project 2 (1)_page-0003" src="https://github.com/user-attachments/assets/ec573754-9354-4a80-8eee-fbbd136863dd" />
-
-**This is the original reports when i'm on board with SEPRO ECO CLEAN**
-
-## Portfolio Context
-
-| Project | Scope | Central question |
-|---|---|---|
-| 01 — Lead-to-Order | Marketing + Sales | How does demand become an order? |
-| **02 — Inventory & Fulfillment** | Sales Order + Inventory + Purchasing + Logistics | How can demand be fulfilled efficiently? |
-| 03 — Lead-to-Cash | Commercial + Operations + Finance | Where are time and working capital lost end-to-end? |
-
-## Data Disclosure
-
-This case study is modeled on a B2B operating process I have worked with and understand in practice. To protect confidential company information, all transaction-level customer, supplier, pricing, inventory, purchasing, logistics, revenue, and payment records in this portfolio are **synthetically generated**.
-
-The data is used to recreate realistic business relationships and operational trade-offs so that I can demonstrate how I approach inventory, fulfillment, supplier, and total-cost analysis without exposing company records.
-
-## Architecture
-
-```text
-Synthetic Source Data
-        ↓
-Bronze Layer
-        ↓
-Silver Layer
-Clean • Standardize • Validate • Reconcile
-        ↓
-Gold Layer  ←  THIS REPOSITORY
-Facts • Operational Marts • KPI Validation
-        ↓
-Business Analysis SQL
-        ↓
-Power BI / Insight / Recommendation
-```
-
-Project 02 reuses commercial master data and Sales Order structures established upstream, then extends the model into inventory, purchasing, shipment, fulfillment, and supplier-cost analysis.
-
-## Business Problem
-
-Customer demand must be fulfilled on time while controlling inventory exposure and procurement cost. The main trade-offs are:
-
-```text
-Availability vs Inventory Cost
-Purchase Price vs Supplier Reliability
-Safety Stock vs Service Level
-```
-
-## Core Business Questions
-
-1. Which products are most exposed to stockout risk and late fulfillment?
-2. How is stock availability at order time associated with Customer OTIF?
-3. Which suppliers provide the best reliability-versus-total-cost trade-off, rather than simply the lowest unit price?
-
-## Business Flow
+| Area | Outcome |
+|---|---|
+| Fulfillment evidence | **455 successfully delivered orders** used to evaluate downstream service performance |
+| Inventory risk | Stockout and coverage analyzed from **daily inventory snapshots**, not month-end balance alone |
+| Customer OTIF | Calculated at **Sales Order grain** after aggregating partial shipments |
+| Availability vs OTIF | Compared order-time availability with delivered-order OTIF to identify service-level differences |
+| Supplier performance | Evaluated using **actual lead time, landed cost, expedite cost, quality cost, holding cost, and estimated TCO** |
+| Data limitation | Supplier receipt timeliness is treated as a **proxy**, not true Supplier OTIF, because reliable `quantity_received` is unavailable |
 
 ```text
 Sales Order
     ↓
 Inventory Availability
     ↓
-Fulfillment / Shipment / Delivery
+Fulfillment
+    ↓
+Shipment / Delivery
     ↓
 Customer OTIF
-
-If stock is constrained:
-
-Inventory Need
-    ↓
-Purchase Order
-    ↓
-Supplier Receipt
-    ↓
-Quality / Inbound Cost
-    ↓
-Inventory Available
 ```
 
-## Gold Layer Scope
+---
 
-### Reused shared dimensions / commercial facts
+## 🧹 Data Preparation
 
-- Date
-- Customer
-- Product
-- Supplier
-- Warehouse
-- Sales Order
-- Sales Order Line
+The source package intentionally contains imperfect operational data such as missing values, duplicated records, inconsistent formats, incomplete receipt evidence, and repeated business events.
 
-### Project 02 facts
+These issues are handled upstream in the **Silver Layer** before Gold modeling and analysis.
 
-- `gold.fact_inventory_snapshot`
-- `gold.fact_inventory_movement`
-- `gold.fact_purchase_order`
-- `gold.fact_purchase_order_line`
-- `gold.fact_shipment`
-- `gold.fact_shipment_line`
-- `gold.fact_fulfillment`
+🔗 **Silver Layer:** [SEPRO_Cleaning_Data](https://github.com/FatBoyIL/SEPRO_Cleaning_Data)
 
-### Analytical marts
+The Gold Layer then focuses on:
 
-- `gold.mart_inventory_risk`
-- `gold.mart_order_availability_otif`
-- `gold.mart_supplier_performance`
+- Grain validation
+- Fact and dimension modeling
+- Operational marts
+- KPI validation
+- Diagnostic SQL
+- Power BI reporting
 
-## Main Source Domains Reviewed
+---
 
-The original synthetic source package includes:
+## 🧠 Business Thinking
 
-- `inventory_daily_snapshot_raw.csv`
-- `inventory_movements_raw.csv`
-- `inventory_policy_history.csv`
-- `purchase_orders_raw.csv`
-- `purchase_order_lines_raw.csv`
-- `qa_events_raw.csv`
-- `shipments_raw.csv`
-- `shipment_lines_raw.csv`
-- reused `sales_orders_raw.csv` and `sales_order_lines_raw.csv`
-- shared products, suppliers, warehouses, customers, and FX/reference data
+- **Availability is not the same as service level** → inventory position must be connected to actual fulfillment evidence
+- **Daily evidence before monthly KPI** → stockout risk is measured from daily Product × Warehouse snapshots before aggregation
+- **Order grain for Customer OTIF** → partial shipments are aggregated before deciding whether an order was delivered On Time and In Full
+- **Coverage and stockout must be read together** → high inventory does not automatically mean healthy inventory
+- **Supplier price is not total supplier cost** → reliability, freight, customs, expedite, quality, and holding cost must also be considered
+- **Proxy is not a true KPI** → supplier receipt timeliness is not presented as true Supplier OTIF when in-full receipt evidence is unavailable
+- **Association is not causation** → lower availability can be associated with lower OTIF without proving that inventory shortage alone caused the service failure
+- **No arbitrary supplier score** → trade-offs remain visible unless business-defined weights exist
 
-The project also includes a TCO framework and intervention records as analytical context.
+---
 
-## Key Metrics
+## 🧩 Four Modeling Perspectives
+
+| Model | Purpose in This Project |
+|---|---|
+| **Data Model** | Organize inventory, purchasing, shipment, fulfillment, supplier, and Sales Order data at the correct grain |
+| **Business Model** | Represent how customer demand moves from Sales Order → Inventory Availability → Fulfillment → Delivery → Customer OTIF |
+| **Analytic Model** | Analyze the factors associated with stockout risk, late or incomplete fulfillment, service level, supplier reliability, and total cost |
+| **Predictive Model** | Future extension for demand forecasting, stockout risk prediction, replenishment planning, or supplier lead-time prediction. Predictive modeling is **not implemented in the current version** |
+
+```text
+Business Process
+      ↓
+Business Model
+      ↓
+Data Model
+      ↓
+Analytic Model
+      ↓
+Insight & Decision Support
+      ↓
+Predictive Model
+Future Scope
+```
+
+The current project focuses on **descriptive and diagnostic analytics**.
+
+---
+
+## 🎯 ROI Framework
+
+### R — Relevance
+
+Once a Sales Order is created, the business must answer a different question:
+
+> **Can customer demand be fulfilled reliably without creating excessive inventory or selecting suppliers only by purchase price?**
+
+The project focuses on three operational questions:
+
+1. Which products and warehouses are most exposed to **stockout and fulfillment risk**?
+2. How is **availability at order time** associated with Customer OTIF?
+3. Which suppliers show meaningful **reliability vs total-cost trade-offs**?
+
+### O — Outcome
+
+The project connects three decision areas that are often analyzed separately:
+
+```text
+Inventory Risk
+      +
+Order Fulfillment
+      +
+Supplier Performance
+      ↓
+Operational Decision Support
+```
+
+It uses delivered-order evidence to evaluate service performance, drills inventory exposure down to Product × Warehouse × Month, and expands supplier analysis beyond unit price into landed cost and estimated TCO.
+
+### I — Insight
+
+The main analytical value comes from keeping the business logic and the data grain aligned:
+
+- Stockout risk is diagnosed from daily inventory evidence
+- Customer OTIF is evaluated after partial shipments are consolidated
+- Availability groups are compared using delivered-order populations
+- Supplier performance is reviewed at Supplier × Product level
+- TCO is interpreted together with its data coverage
+- Operational flags are used to prioritize investigation, not as automatic verdicts
+
+---
+
+## 🚀 Decision Focus
+
+The analysis supports five practical decision areas:
+
+1. Prioritize SKUs with **high stockout and fulfillment exposure**
+2. Investigate warehouse and replenishment patterns behind recurring shortages
+3. Review failed OTIF orders at order-line level to distinguish **late vs incomplete fulfillment**
+4. Compare suppliers using **reliability and total-cost components**, not purchase price alone
+5. Improve source-data capture where missing receipt quantity prevents true Supplier OTIF measurement
+
+---
+
+## 🛠️ Technical Approach
+
+```text
+Synthetic Operational Data
+        ↓
+Bronze Layer
+        ↓
+Silver Layer
+Clean → Standardize → Validate → Reconcile
+        ↓
+Gold Layer
+Facts → Operational Marts → KPI Validation
+        ↓
+T-SQL Analysis
+        ↓
+Power BI
+Insight → Decision Support
+```
+
+### Main Gold Marts
+
+- `gold.mart_inventory_risk` → Product × Month inventory and fulfillment risk
+- `gold.mart_order_availability_otif` → 1 row per Sales Order
+- `gold.mart_supplier_performance` → 1 row per Purchase Order Line
+
+### Important Grains
+
+| Object | Grain |
+|---|---|
+| `fact_inventory_snapshot` | Date × Product × Warehouse |
+| `fact_fulfillment` | 1 Sales Order Line |
+| `mart_order_availability_otif` | 1 Sales Order |
+| `mart_supplier_performance` | 1 Purchase Order Line |
+
+### Key Skills
+
+**SQL Server | T-SQL | JOIN | CTE | Window Functions | Data Validation | Data Modeling | Inventory Analytics | OTIF Analysis | Supplier Analysis | TCO Analysis | Power BI | DAX**
+
+---
+
+## 📈 Power BI Report
+
+### Inventory Risk
+
+<img width="6150" height="3525" alt="Project 2 (1)_page-0001" src="https://github.com/user-attachments/assets/84308745-4bf0-4864-b479-1e73b3776406" />
+
+### Availability vs OTIF
+
+<img width="6150" height="3525" alt="Project 2 (1)_page-0002" src="https://github.com/user-attachments/assets/86748e8b-3ff3-4ecf-9069-4b924ddd17bf" />
+
+### Supplier Performance / TCO
+
+<img width="6150" height="3525" alt="Project 2 (1)_page-0003" src="https://github.com/user-attachments/assets/ec573754-9354-4a80-8eee-fbbd136863dd" />
+
+---
+
+## 📐 Core Metrics
 
 - Weighted Stockout Rate
 - Inventory Coverage Days
@@ -152,101 +216,23 @@ The project also includes a TCO framework and intervention records as analytical
 - Estimated Holding Cost
 - Estimated TCO
 
-For exact definitions and implementation cautions, see [`docs/04_metric_definitions.md`](docs/04_metric_definitions.md).
+---
 
-## Analysis Approach
+## 📁 Repository Guide
 
-```text
-Validate operational marts
-        ↓
-Profile stockout / coverage distribution
-        ↓
-Drill down Product × Warehouse × Month
-        ↓
-Segment SKU risk and Pareto exposure
-        ↓
-Compare availability at order vs Customer OTIF
-        ↓
-Trace SKU/order-line shortages to late or incomplete fulfillment
-        ↓
-Compare supplier reliability and total-cost components
-        ↓
-Drill down Supplier × Product
-        ↓
-Produce decision-ready conclusion outputs
-```
-
-## Repository Structure
-
-```text
-.
-├── README.md
-├── docs/
-│   ├── 01_project_overview.md
-│   ├── 02_business_logic.md
-│   ├── 03_data_model.md
-│   ├── 04_metric_definitions.md
-│   ├── 05_assumptions_limitations.md
-│   └── 06_review_guide.md
-│
-├── sql/
-│   ├── 00_setup/
-│   ├── 01_gold_model/
-│   │   ├── dimensions/
-│   │   ├── facts/
-│   │   └── marts/
-│   ├── 02_validation/
-│   ├── 03_analysis/
-│   │   ├── 01_core/
-│   │   └── 02_diagnostics/
-│   └── 99_conclusion/
-│
-├── powerbi/
-├── images/
-└── data/
-    └── sample/
-```
-
-## Reproducibility
-
-Recommended execution order:
-
-1. Prepare and validate Silver tables from the upstream Silver repository.
-2. Verify shared dimensions and reused Sales Order facts are available.
-3. Create/load Project 02 facts.
-4. Create/load the three analytical marts.
-5. Run Project 02 KPI validation.
-6. Run core and diagnostic SQL.
-7. Use the marts as Power BI sources.
-
-## Analytical Principles Demonstrated
-
-- Preserve daily inventory grain before monthly aggregation.
-- Keep warehouse and product context available for diagnostics.
-- Calculate Customer OTIF at **Sales Order grain**, not shipment grain.
-- Aggregate partial shipments before deciding whether an order is complete.
-- Do not choose suppliers using unit price alone.
-- Keep reliability, landed cost, quality cost, expedite cost, and TCO visible separately.
-- Do not invent a composite supplier score unless business weights are defined.
-- Treat availability vs OTIF as an observational association, not causal proof.
-
-## Power BI
-
-The intended reporting structure is:
-
-- Inventory Risk
-- Availability vs OTIF
-- Supplier Performance / TCO
-
-Dashboard screenshots should be stored under `images/`, while the Power BI file belongs in `powerbi/`.
-
-## Documentation
-
-- [`docs/03_data_model.md`](docs/03_data_model.md) — operational lineage, grains, and dependencies
-- [`docs/04_metric_definitions.md`](docs/04_metric_definitions.md) — inventory, fulfillment, OTIF, and supplier metric contracts
-- [`docs/05_assumptions_limitations.md`](docs/05_assumptions_limitations.md) — availability, supplier, and TCO limitations
-- [`docs/06_review_guide.md`](docs/06_review_guide.md) — step-by-step review guide
+- [`docs/03_data_model.md`](docs/03_data_model.md) → grain, lineage, and operational relationships
+- [`docs/04_metric_definitions.md`](docs/04_metric_definitions.md) → KPI definitions and population rules
+- [`docs/05_assumptions_limitations.md`](docs/05_assumptions_limitations.md) → availability, supplier, and TCO limitations
+- [`docs/06_review_guide.md`](docs/06_review_guide.md) → step-by-step analytical review
+- [`sql/`](sql/) → Gold modeling, validation, diagnostics, and conclusion SQL
+- [`powerbi/`](powerbi/) → Power BI project files
 
 ---
 
-**Portfolio note:** the business logic is designed to reflect how I understand and analyze the process in practice; the underlying transaction values are synthetic to protect confidential company information.
+## 🔒 Data Disclosure
+
+This case study is modeled on a B2B operating process I have worked with and understand in practice.
+
+Customer, supplier, pricing, inventory, purchasing, logistics, and transaction-level records are **synthetically generated** to protect confidential company information.
+
+The project is designed to demonstrate how I approach operational analytics from data preparation and grain control to decision support.
