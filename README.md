@@ -14,8 +14,8 @@ The upstream Silver Layer is maintained separately in:
 **Power BI layout**
 
 <img width="6150" height="3525" alt="Project 2 (1)_page-0001" src="https://github.com/user-attachments/assets/84308745-4bf0-4864-b479-1e73b3776406" />
-<img width="6150" height="3525" alt="Project 2 (1)_page-0003" src="https://github.com/user-attachments/assets/ec573754-9354-4a80-8eee-fbbd136863dd" />
 <img width="6150" height="3525" alt="Project 2 (1)_page-0002" src="https://github.com/user-attachments/assets/86748e8b-3ff3-4ecf-9069-4b924ddd17bf" />
+<img width="6150" height="3525" alt="Project 2 (1)_page-0003" src="https://github.com/user-attachments/assets/ec573754-9354-4a80-8eee-fbbd136863dd" />
 
 **This is the original reports when i'm on board with SEPRO ECO CLEAN**
 
