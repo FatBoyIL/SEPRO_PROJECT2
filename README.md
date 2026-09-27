@@ -11,13 +11,11 @@ The upstream Silver Layer is maintained separately in:
 **Silver Layer repository:** https://github.com/FatBoyIL/SEPRO_Cleaning_Data
 
 
-**Power BI report in processing you could seek for that in power bi folder or you could see this instead:**
+**Power BI layout**
 
-https://drive.google.com/file/d/1aKpIxk63aqfpAHCrnGY1kwh3ppN67bp5/view
-
-https://drive.google.com/file/d/1R_dqMuKu3B-7fE9v0dNAB5pDSZtwQdUD/view
-
-https://drive.google.com/file/d/1tmV3wueijgEy6ixx-4hI_4S4xl3RRAy4/view
+<img width="6150" height="3525" alt="Project 2 (1)_page-0001" src="https://github.com/user-attachments/assets/84308745-4bf0-4864-b479-1e73b3776406" />
+<img width="6150" height="3525" alt="Project 2 (1)_page-0003" src="https://github.com/user-attachments/assets/ec573754-9354-4a80-8eee-fbbd136863dd" />
+<img width="6150" height="3525" alt="Project 2 (1)_page-0002" src="https://github.com/user-attachments/assets/86748e8b-3ff3-4ecf-9069-4b924ddd17bf" />
 
 **This is the original reports when i'm on board with SEPRO ECO CLEAN**
 
